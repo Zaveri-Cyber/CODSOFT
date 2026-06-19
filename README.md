@@ -51,7 +51,7 @@ A simple recommendation system using collaborative or content-based filtering.
 ---
 
 ## 📬 Contact
-- **Email:** [Yo]
+- **Email:** [teamrdx05@gmail.com]
 
 ---
 
