@@ -1,2 +1,2 @@
 # CODSOFT
-CodSoft Artificial Intelligence Internship tasks repository containing AI projects
+AI Internship tasks from CodSoft - Restaurant Chatbot, Tic-Tac-Toe AI, and Recommendation System
