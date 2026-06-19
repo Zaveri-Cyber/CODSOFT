@@ -1,0 +1,159 @@
+# STEP 1: Restaurant Data & Menu Setup
+restaurant_address = "Sindhu Bhavan Road, Ahmedabad"
+restaurant_phone = "+91 98765 00000"
+restaurant_timings = """Monday - Friday: 1:00 PM - 10:30 PM
+Saturday - Sunday: 11:00 AM - 11:30 PM"""
+
+menu = {
+    "🥗 Starters": {"Paneer Tikka": 220, "Veg Spring Rolls": 180},
+    "🍛 Main Course": {"Butter Paneer Masala": 280, "Dal Makhani": 240, "Veg Kolhapuri": 220},
+    "🍚 Rice & Biryani": {"Veg Biryani": 200, "Jeera Rice": 120, "Steamed Rice": 100},
+    "🍞 Breads": {"Butter Naan": 50, "Garlic Naan": 60, "Tandoori Roti": 40},
+    "🍰 Desserts & Beverages": {"Gulab Jamun": 80, "Masala Chai": 40, "Cold Coffee": 120, "Beverages": 50}
+}
+
+# Helper function to find an item in the nested menu dictionary
+def find_item_in_menu(item_name):
+    for category, items in menu.items():
+        if item_name in items:
+            return items[item_name] 
+    return None 
+
+# STEP 2: Greeting and Menu Display
+def greet():
+    print("\n" + "="*40)
+    print("Welcome to Spice Garden! 🍽️")
+    print("How can I help you today?")
+    print("1. View Menu")
+    print("2. Place Order")
+    print("3. Restaurant Info")
+    print("4. Contact Us")
+    print("="*40)
+
+def show_menu():
+    print("\n📋 Spice Garden Menu")
+    print("-" * 35)
+    for category, items in menu.items():
+        print(f"\n{category}")
+        for item, price in items.items():
+            print(f"  - {item:<25} ₹{price}")
+    print("-" * 35)
+
+# STEP 3: Info, Contact, and Main Chat Loop
+def show_info():
+    print("\n📍 Spice Garden Restaurant Information")
+    print("-" * 40)
+    print(f"Address: {restaurant_address}")
+    print(f"Timings: \n{restaurant_timings}")
+    print("-" * 40)
+
+def show_contact():
+    print("\n📞 Contact Spice Garden")
+    print("-" * 40)
+    print(f"Phone: {restaurant_phone}")
+    print("-" * 40)
+
+# STEP 4: The Ordering & Billing System
+def place_order():
+    print("\n🛒 Let's place your order!")
+    print("Please type the exact item name from the menu.")
+    print("(Type 'bill' at any time to finish and see your total)")
+    print("-" * 40)
+
+    order_list = []  # To store ordered items
+    total_bill = 0   # To keep track of the total price
+
+    while True:
+        # 1. Ask for item name
+        item_input = input("\nEnter item name (or 'bill'): ").strip().title() 
+        # .title() converts "butter naan" to "Butter Naan" to match our menu keys!
+
+        # 2. Check if user wants the bill
+        if item_input == "Bill":
+            break
+
+        # 3. Check if user wants to see the menu again while ordering
+        if item_input == "Menu":
+            show_menu()
+            continue
+
+        # 4. Check if item exists in menu
+        price = find_item_in_menu(item_input)
+        
+        if price is None:
+            print(f"\n❌ '{item_input}' is not found in our menu.")
+            print("📋 Please enter the exact item name from the menu.")
+            print("👉 Type 'menu' to view the full menu first!")
+            continue # Skips the rest of the loop 
+
+        # 5. Ask for quantity
+        try:
+            qty = int(input(f"How many {item_input}? "))
+            if qty <= 0:
+                print("Quantity must be at least 1.")
+                continue
+        except ValueError:
+            print("❌ Invalid quantity. Please enter a number.")
+            continue
+
+        # 6. Calculate and add to order
+        item_total = price * qty
+        total_bill += item_total
+        order_list.append({"item": item_input, "qty": qty, "price": price, "total": item_total})
+
+        print(f"✅ Added: {qty} x {item_input} = ₹{item_total}")
+        print(f"💰 Current Total: ₹{total_bill}")
+
+    # 7. Show Final Bill
+    if len(order_list) == 0:
+        print("\nYou didn't order anything. Returning to main menu.")
+    else:
+        print("\n" + "="*40)
+        print("🧾 YOUR FINAL BILL - SPICE GARDEN")
+        print("="*40)
+        for order in order_list:
+            print(f"{order['qty']} x {order['item']:<20} = ₹{order['total']}")
+        print("-" * 40)
+        print(f"TOTAL AMOUNT TO PAY: ₹{total_bill}")
+        print("="*40)
+        print("Thank you for ordering from Spice Garden! 🌶️\n")
+
+# THE MAIN CHAT ENGINE
+def start_chatbot():
+    greet()
+    
+    while True:
+        user_input = input("\nHow can I help you? (or type 'bye' to exit): ").lower().strip()
+
+        # 1. EXIT
+        if user_input in ["bye", "goodbye", "exit", "quit", "thanks", "thank you"]:
+            print("\nThank you for visiting Spice Garden! 🌶️ Have a wonderful day! 👋")
+            break 
+
+        # 2. GREETINGS
+        elif user_input in ["hi", "hello", "hey", "good morning", "good afternoon", "good evening", "good night"]:
+            greet()
+
+        # 3. MENU
+        elif user_input in ["1", "menu", "show menu", "view menu", "give menu"]:
+            show_menu()
+
+        # 4. ORDER
+        elif user_input in ["2", "order", "place order", "take my order"]:
+            place_order()
+
+        # 5. INFO
+        elif user_input in ["3", "restaurant info", "info", "address", "location", "timings", "hours"]:
+            show_info()
+
+        # 6. CONTACT
+        elif user_input in ["4", "contact", "contact us", "phone", "mobile number", "call"]:
+            show_contact()
+
+        # 7. DEFAULT RESPONSE
+        else:
+            print("\nSorry, I didn't understand that. 😕")
+            print("You can choose one of these options:")
+            print("1. View Menu\n2. Place Order\n3. Restaurant Info\n4. Contact Us")
+
+start_chatbot()
